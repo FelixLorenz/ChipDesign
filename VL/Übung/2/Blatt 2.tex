@@ -1,0 +1,152 @@
+\documentclass[a4paper,10pt,headsepline, DIV11]{scrartcl}%scrreprt
+\usepackage[automark]{scrpage2}
+
+%einiges davon benötigt ihr mit Sicherheit nciht
+
+\usepackage{amsfonts}
+
+%semantische klammern
+\usepackage{stmaryrd}
+
+% tabelle einfärben
+\usepackage{colortbl}
+
+\usepackage{hyperref}
+\usepackage{ifthen}
+
+%eurosymbol
+\usepackage{eurosym}
+
+\usepackage{paralist}
+
+%"definiert als" - Symbol
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+%bspw. für Indikatorfunktion:
+%\usepackage{unicode-math}
+
+% eps einbinden
+\usepackage{epstopdf}
+
+% Basic Packages
+\usepackage[utf8]{inputenc}
+\usepackage[top=2.2cm, right=2.2cm, bottom=2.2cm, left=2.2cm]{geometry}
+\usepackage[german]{babel}
+\usepackage{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+% Layout Packages
+\usepackage{textcomp}
+\usepackage{multicol}
+\usepackage{ulem}
+\usepackage{wasysym}
+\usepackage{pifont}
+\usepackage{listings}
+
+%Extra Packages
+\usepackage{esvect} %Vectors
+\usepackage{pgf}
+%\usepackage{algorithmic}
+\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
+%\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{shapes,backgrounds,arrows,patterns,automata,trees,calc}
+
+
+\topmargin-50pt
+
+%%%%%%%%%%%%%%%%%%%%%%
+%Header
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{aufgabe}
+\def\tand{&}
+
+\newcommand{\makeTableLine}[2][0]{%
+	\setcounter{aufgabe}{1}%
+	\whiledo{\value{aufgabe} < #1}%
+	{%
+		#2\tand\stepcounter{aufgabe}%
+	}
+}
+
+\newcommand{\aufgTable}[1]{
+	\def\spalten{\numexpr #1 + 1 \relax}
+	\begin{tabular}{|*{\spalten}{p{1cm}|}}
+		\makeTableLine[\spalten]{\theaufgabe}$\Sigma$~~\\ \hline
+		\rule{0pt}{15pt}\makeTableLine[\spalten]{}\\
+	\end{tabular}
+}
+
+\def\header#1#2#3#4#5#6#7#8{\pagestyle{empty}
+	\begin{minipage}[t]{0.47\textwidth}
+		\begin{flushleft}
+			{\textbf{#4}}\\
+			#5\\
+			Tutor: #2\\
+			#8
+		\end{flushleft}
+	\end{minipage}
+	\begin{minipage}[t]{0.5\textwidth}
+		\begin{flushright}
+			#6 \vspace{0.5cm}\\
+			%                 Number of Columns    Definition of Columns      second empty line
+			% \begin{tabular}{|*{5}{C{1cm}|}}\hline A1&A2&A3&A4&$\Sigma$\\\hline&&&&\\\hline\end{tabular}\\\vspace*{0.1cm}
+			\aufgTable{#7}
+		\end{flushright}
+	\end{minipage}
+	\vspace{1cm}
+	\begin{center}
+		{\Large \textbf{Blatt #1}}
+		
+		{(Abgabe am #3)}
+	\end{center}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%Begin des Dokuments%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+	%\header{BlattNr}{Tutor}{Abgabedatum}{Vorlesungsname}{Namen}{Semester}{Anzahl Aufgaben}{optional sonstiges}
+	\header{2}{}{22.11.2018}{Chip Design}{\textit{Felix Lorenz}\\ \textit{Luisa Renz}}{Wintersemester 18/19}{2}{}
+	\vspace{1cm}
+	\subsection*{Aufgabe 1: Netzwerktheorie}
+	\begin{itemize}
+		\item[\textbf{Berechnen Sie $U_R1, U_R2, I$}]\hfill \\
+		\[ R_{ges} = R_1 + R_2 = 1000\Omega + 250\Omega = 1250\Omega \]
+		\[I = \frac{U}{R_{ges}} = \frac{U}{R_1 + R_2} = \frac{5V}{1250\Omega} = 0.004 A \]
+		Wegen Reihenschaltung gilt, dass Strom $I$ überall im Netzwerk gleich groß ist, also:
+		\[ U_{R1} = I \cdot R_1 = 0.004 A \cdot 1000\Omega = 4 V \]
+		und
+		\[ U_{R2} = I \cdot R_2 = 0.004 A \cdot 250\Omega = 1 V \]
+		
+		\item[\textbf{$R_2$ durch Diode ersetzt}]\hfill \\
+		Mittels Maschengleichung:
+		\begin{align*}
+			U_0 - U_D - U_{R1} &= 0\\
+			U_{R_1} &= U_0 - U_D\\
+			U_{R_1} &= 5 V - 0.6 V = 4.4 V
+		\end{align*}
+		Berechnung des Stromes im Netzwerk. Wegen Reihenschaltung gilt wieder:
+		\[I = \frac{U_R1}{R_{ges}} = \frac{4.4V}{1000\Omega} = 0.0044 A \]
+		Berechnung des theoretisch möglichen Stromes durch die Diode:
+		\[ I_D = I_{SS} \cdot (e^{\frac{U_D}{U_T}}-1) \]
+		\[I_{SS} \approx 7.2 \cdot 10^{-11}A \]
+		\[U_T = \frac{q}{kT} = 26mV\]
+		Einsetzen:
+		\[ I_D = 7.2 \cdot 10^{-11}A \cdot (e^{\frac{0.6}{0.026}}-1) = 0.7577 A  \]
+		
+	\end{itemize}
+
+\subsection*{Back-Annotation}
+Das Prinzip der Back-Annotation beschreibt, die Erweiterung eines logischen Designs bzw. einer textuellen Beschreibung eines Netzwerkes um zugehörige innere Leitungswiderstände und Signalverzögerungen, so dass die zugehörige Simulation näher an das zu erwartende reale Endprodukt heranreicht.
+	\end{document}
+
+	
