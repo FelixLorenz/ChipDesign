@@ -1,0 +1,176 @@
+\documentclass[a4paper,10pt,headsepline, DIV11]{scrartcl}%scrreprt
+\usepackage[automark]{scrpage2}
+
+%einiges davon benötigt ihr mit Sicherheit nciht
+
+\usepackage{amsfonts}
+
+%semantische klammern
+\usepackage{stmaryrd}
+
+% tabelle einfärben
+\usepackage{colortbl}
+
+\usepackage{hyperref}
+\usepackage{ifthen}
+
+%eurosymbol
+\usepackage{eurosym}
+
+\usepackage{paralist}
+
+%"definiert als" - Symbol
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+%bspw. für Indikatorfunktion:
+%\usepackage{unicode-math}
+
+% eps einbinden
+\usepackage{epstopdf}
+
+% Basic Packages
+\usepackage[utf8]{inputenc}
+\usepackage[top=2.2cm, right=2.2cm, bottom=2.2cm, left=2.2cm]{geometry}
+\usepackage[german]{babel}
+\usepackage{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+% Layout Packages
+\usepackage{textcomp}
+\usepackage{multicol}
+\usepackage{ulem}
+\usepackage{wasysym}
+\usepackage{pifont}
+\usepackage{listings}
+
+%Extra Packages
+\usepackage{esvect} %Vectors
+\usepackage{pgf}
+%\usepackage{algorithmic}
+\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
+%\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{shapes,backgrounds,arrows,patterns,automata,trees,calc}
+
+
+\topmargin-50pt
+
+%%%%%%%%%%%%%%%%%%%%%%
+%Header
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{aufgabe}
+\def\tand{&}
+
+\newcommand{\makeTableLine}[2][0]{%
+	\setcounter{aufgabe}{1}%
+	\whiledo{\value{aufgabe} < #1}%
+	{%
+		#2\tand\stepcounter{aufgabe}%
+	}
+}
+
+\newcommand{\aufgTable}[1]{
+	\def\spalten{\numexpr #1 + 1 \relax}
+	\begin{tabular}{|*{\spalten}{p{1cm}|}}
+		\makeTableLine[\spalten]{\theaufgabe}$\Sigma$~~\\ \hline
+		\rule{0pt}{15pt}\makeTableLine[\spalten]{}\\
+	\end{tabular}
+}
+
+\def\header#1#2#3#4#5#6#7#8{\pagestyle{empty}
+	\begin{minipage}[t]{0.47\textwidth}
+		\begin{flushleft}
+			{\textbf{#4}}\\
+			#5\\
+			Tutor: #2\\
+			#8
+		\end{flushleft}
+	\end{minipage}
+	\begin{minipage}[t]{0.5\textwidth}
+		\begin{flushright}
+			#6 \vspace{0.5cm}\\
+			%                 Number of Columns    Definition of Columns      second empty line
+			% \begin{tabular}{|*{5}{C{1cm}|}}\hline A1&A2&A3&A4&$\Sigma$\\\hline&&&&\\\hline\end{tabular}\\\vspace*{0.1cm}
+			\aufgTable{#7}
+		\end{flushright}
+	\end{minipage}
+	\vspace{1cm}
+	\begin{center}
+		{\Large \textbf{Kapitelfragen #1}}
+		
+		{(Abgabe am #3)}
+	\end{center}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%Begin des Dokuments%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+	%\header{BlattNr}{Tutor}{Abgabedatum}{Vorlesungsname}{Namen}{Semester}{Anzahl Aufgaben}{optional sonstiges}
+	\header{2}{Adrian Frischknecht}{15.11.2018}{Chip Design}{\textit{Felix Lorenz}\\ \textit{Luisa Renz}}{Wintersemester 18/19}{0}{}
+	\vspace{1cm}
+	\section*{Fragen und Antworten}
+	\begin{itemize}
+		\item[\textbf{1. Ist die Entwicklung oder die Fertigung für die Ausbeute  verantwortlich?}]\hfill \\
+		Die Fertigung ist für die Einhaltung der Technologieparameter verantwortlich. Toleranzüberschreitungen führen zu Ausschuss und somit geringerer Ausbeute. Also hat die Fertigung einen Einfluss auf die Ausbeute.
+		Außerdem: Gemäß der Formel nach Moore steigt die Ausbeute bei kleinerer Fläche eines einzelnen Chips. Diese Verringerung der Fläche ist durch kleinere Fertigungsgrößen erreichbar, welche wiederum durch kleinere Transistoren erreicht werden können. Ebenso könnte mittels effizienterer Schaltungen (weniger Gatter bei gleicher logischer Mächtigkeit) und besserem Layout weiter Platz eingespart werden. Alle drei Punkte fallen unter Designparameter und in den Verantwortungsbereich der Entwicklung.\\
+		Insgesamt kann also gesagt werden, dass sowohl Fertigung als auch Entwicklung einen Einfluss auf die Ausbeute haben.
+		\item[\textbf{2. Was ist das Entwicklungsergebnis?}]\hfill \\
+		Zum einen resultieren aus dem Entwicklungsprozess ganz allgemein die Designparameter basierend auf den Vorgaben der Kunden (Spezifikationsparameter) und den Fähigkeiten der Fertigung (Technologieparameter). Zum Anderen werden als Ergebnis der Entwicklung an das Frontend of Line die Masken zur Fotolithografie und die Designparameter weitergereicht. Außerdem entsteht aus der Entwicklung durch die Implementierung der Spezifikations- und Technologieparameter in direkter Abhängigkeit das entsprechende Testprogramm für das Backend of Line.
+		\item[\textbf{3. Was ist am Ende der Waferfertigung zu testen?}]\hfill
+		\begin{enumerate}
+			\item Messung der Technologieparameter (elektrisch in Ordnung)
+			\item Messung ob Spezifikationen eingehalten werden
+			\item Prüfen auf Funktionalität (evtl. evtl. parametrische Einschränkungen durch Punkt-Defekte)
+		\end{enumerate}
+		\item[\textbf{4. Was begrenzt die Ausbeute unabhängig von Fertigung und Entwicklung?}]\hfill \\
+		Generell begrenzen unabhängig von Fehlerfreiheit bei Fertigung und Entwicklung Verunreinigungen die Ausbeute. Teils in der Luft des Reinraumes oder aber auch chemisch in den verwendeten Stoffen.
+		\item[\textbf{5. Was versteht man unter Defektdichte?}]\hfill \\
+		Auf einem Wafer können Defekte auftreten. Liegt solch ein Defekt auf einem Chip, dann ist dessen Funktionalität sehr wahrscheinlich eingeschränkt oder er hat einen Totalausfall. Die Defektdichte gibt die Anzahl solcher Defekte pro Flächeneinheit auf einem Wafer.
+		\item[\textbf{6. Wie ist die Ausbeute definiert?}]\hfill \\
+		Die Ausbeute ist das Verhältnis der durch den Produktions-Test der Chips noch auf der Scheibe vor dem Vereinzeln für gut befundenen Chips zu den auf der Scheibe geometrisch möglichen.
+		\item[\textbf{7. Wie kann man die Anzahl guter Chips auf dem Wafer erhöhen?}]\hfill \\
+		Je kleiner die Chips desto geringer die Wahrscheinlichkeit, dass er sich einen Punktdefekt einfängt.
+		\item[\textbf{8. Was für Informationen enthält eine Ausbeuteformel?}]\hfill
+		\begin{enumerate}
+			\item $D =$ Die Defektdichte in Defekte pro Flächeneinheit
+			\item $A =$ Die Fläche eines einzelnen ICs
+		\end{enumerate}
+	\item[\textbf{9. Wie lautet Moores Ausbeuteformel?}]\hfill \\
+	Formel: $Y_W = e^{-\sqrt{AD}}$\\
+	Dabei ist zu beachten, dass die tatsächliche Verteilung der Defekte auf einem Wafer unbekannt ist. Daher wird mit der Ausbeuteformel nur statistisch abgeschätzt. Weiter noch ist der Aufbau der Formel heuristisch und in keiner Weise theoretische einwandfrei begründbar.
+	\item[\textbf{10. Zahlenbeispiel}]\hfill
+\[\frac{K_{\text{neu}}}{K_{\text{alt}}} = \frac{A_{\text{neu}}}{A_{\text{alt}}} \cdot \frac{Y_{W_{\text{alt}}}}{Y_{W_{\text{neu}}}}\]
+	\begin{itemize}
+		\item[mit Murphy Dirac] $Y_W = e^{-AD_0}$ : \hfill
+		\begin{itemize}
+			\item[Einfluss Chipfläche:]
+			\[\frac{K_{\text{neu}}}{K_{\text{alt}}} = \frac{2cm^2}{1cm^2} \cdot \frac{e^{-1cm^2\cdot\frac{1}{cm^2}}}{e^{-2cm^2\cdot \frac{1}{cm^2}}} \approx 5.44\]
+			Die verdoppelte Chipfläche hat also circa die 5.4 fachen Kosten zur Folge.
+			\item[Einfluss Defektdichte:]
+			\[\frac{K_{\text{neu}}}{K_{\text{alt}}} = \frac{2cm^2}{1cm^2} \cdot \frac{e^{-1cm^2\cdot\frac{0.5}{cm^2}}}{e^{-2cm^2\cdot \frac{0.5}{cm^2}}} \approx 3.3\]
+			Mit Halbierung der Defektdichte wären die neuen Chips mit doppelter Chipfläche nur noch 3.3 mal so teuer.
+		\end{itemize}
+		\item[mit Murphy Dreieck] $Y_W=\left[ \frac{1-e^{-AD_0}}{AD_0} \right]^2$ : \hfill \\
+		\begin{itemize}
+			\item[Einfluss Chipfläche:]
+			\[\frac{K_{\text{neu}}}{K_{\text{alt}}} = \frac{2}{1} \cdot \frac{\left[ \frac{1-e^{-1cm^2\cdot\frac{1}{cm^2}}}{1cm^2\cdot\frac{1}{cm^2}} \right]^2}{\left[ \frac{1-e^{-2cm^2\cdot\frac{1}{cm^2}}}{2cm^2\cdot\frac{1}{cm^2}} \right]^2} \approx 2 \cdot \frac{\left[ 0.63 \right]^2}{\left[ 0.43 \right]^2} \approx 4.3\]
+			Die verdoppelte Chipfläche hat also circa die 4.3 fachen Kosten zur Folge.
+			\item[Einfluss Defektdichte:]
+			\[\frac{K_{\text{neu}}}{K_{\text{alt}}} = \frac{2}{1} \cdot \frac{\left[ \frac{1-e^{-1cm^2\cdot\frac{0.5}{cm^2}}}{1cm^2\cdot\frac{0.5}{cm^2}} \right]^2}{\left[ \frac{1-e^{-2cm^2\cdot\frac{0.5}{cm^2}}}{2cm^2\cdot\frac{0.5}{cm^2}} \right]^2} \approx 2 \cdot \frac{\left[ 0.79 \right]^2}{\left[ 0.63 \right]^2} \approx 3.14\]
+			Mit Halbierung der Defektdichte wären die neuen Chips mit doppelter Chipfläche nur noch 3.14 mal so teuer.
+		\end{itemize}
+	\end{itemize}
+	\end{itemize}
+
+	\end{document}
+
+	

@@ -1,0 +1,172 @@
+\documentclass[a4paper,10pt,headsepline, DIV11]{scrartcl}%scrreprt
+\usepackage[automark]{scrpage2}
+
+%einiges davon benötigt ihr mit Sicherheit nciht
+
+\usepackage{amsfonts}
+
+%semantische klammern
+\usepackage{stmaryrd}
+
+% tabelle einfärben
+\usepackage{colortbl}
+
+\usepackage{hyperref}
+\usepackage{ifthen}
+
+%eurosymbol
+\usepackage{eurosym}
+
+\usepackage{paralist}
+
+%"definiert als" - Symbol
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+%bspw. für Indikatorfunktion:
+%\usepackage{unicode-math}
+
+% eps einbinden
+\usepackage{epstopdf}
+
+% Basic Packages
+\usepackage[utf8]{inputenc}
+\usepackage[top=2.2cm, right=2.2cm, bottom=2.2cm, left=2.2cm]{geometry}
+\usepackage[german]{babel}
+\usepackage{fontenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+% Layout Packages
+\usepackage{textcomp}
+\usepackage{multicol}
+\usepackage{ulem}
+\usepackage{wasysym}
+\usepackage{pifont}
+\usepackage{listings}
+
+%Extra Packages
+\usepackage{esvect} %Vectors
+\usepackage{pgf}
+%\usepackage{algorithmic}
+\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
+%\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{shapes,backgrounds,arrows,patterns,automata,trees,calc}
+
+
+\topmargin-50pt
+
+%%%%%%%%%%%%%%%%%%%%%%
+%Header
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{aufgabe}
+\def\tand{&}
+
+\newcommand{\makeTableLine}[2][0]{%
+	\setcounter{aufgabe}{1}%
+	\whiledo{\value{aufgabe} < #1}%
+	{%
+		#2\tand\stepcounter{aufgabe}%
+	}
+}
+
+\newcommand{\aufgTable}[1]{
+	\def\spalten{\numexpr #1 + 1 \relax}
+	\begin{tabular}{|*{\spalten}{p{1cm}|}}
+		\makeTableLine[\spalten]{\theaufgabe}$\Sigma$~~\\ \hline
+		\rule{0pt}{15pt}\makeTableLine[\spalten]{}\\
+	\end{tabular}
+}
+
+\def\header#1#2#3#4#5#6#7#8{\pagestyle{empty}
+	\begin{minipage}[t]{0.47\textwidth}
+		\begin{flushleft}
+			{\textbf{#4}}\\
+			#5\\
+			Tutor: #2\\
+			#8
+		\end{flushleft}
+	\end{minipage}
+	\begin{minipage}[t]{0.5\textwidth}
+		\begin{flushright}
+			#6 \vspace{0.5cm}\\
+			%                 Number of Columns    Definition of Columns      second empty line
+			% \begin{tabular}{|*{5}{C{1cm}|}}\hline A1&A2&A3&A4&$\Sigma$\\\hline&&&&\\\hline\end{tabular}\\\vspace*{0.1cm}
+			\aufgTable{#7}
+		\end{flushright}
+	\end{minipage}
+	\vspace{1cm}
+	\begin{center}
+		{\Large \textbf{Blatt #1}}
+		
+		{(Abgabe am #3)}
+	\end{center}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%Begin des Dokuments%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+	%\header{BlattNr}{Tutor}{Abgabedatum}{Vorlesungsname}{Namen}{Semester}{Anzahl Aufgaben}{optional sonstiges}
+	\header{1}{}{08.11.2018}{Chip Design}{\textit{Felix Lorenz}\\ \textit{?}}{Wintersemester 18/19}{3}{}
+	\vspace{1cm}
+	\section*{Aufgabe 1}
+	\begin{enumerate}
+		\item \textbf{Anzahl möglicher Typ A Chips auf Wafer} \hfill \\
+		Formel aus Wikipedia zur Annäherung der geometrisch möglichen Anzahl an Dies per Wafer:
+		\[ \text{DPW} =  \frac{\pi d^2}{4S} - \frac{\pi d}{\sqrt{2S}}\]
+		Dabei wird berechnet, wie viele Chips unabhängig von der Form auf den Wafer passen würden. Da es sich aber um einen kreisförmigen Wafer und quadratische oder quaderförmige Chips handelt wird einer Art Ecken-Korrektur abgezogen.\\
+		Bei $d=150mm$ und $S = 100mm^2$ gilt:
+		\[ \text{DPW} =  \frac{\pi 150^2}{4\cdot 100mm^2} - \frac{\pi 150mm}{\sqrt{2\cdot 100mm^2}} \approx 143.4\]
+		Da nur ganze Chips relevant sind, passen maximal 143 Chips vom Typ A auf einen $150mm$ Wafer.
+		\item  \textbf{Defektdichte nach Moore}\hfill \\
+		Ausbeute von guten Chips auf einem Wafer:
+		\[ Y_{W} = e^{-\sqrt{AD}} \]
+		Wobei $A = $ Chipfläche und $D= $ Defektdichte. Äquivalenzumformung nach $D$:
+		\begin{align*}
+			Y_{W} &= e^{-\sqrt{AD}}\\
+			\ln(Y_{W}) &= -\sqrt{AD}\\
+			(-\ln(Y_{W}))^2 &= AD\\
+			D &= \frac{(-\ln(Y_{W}))^2}{A}
+		\end{align*}
+		Damit:
+		\[ D= \frac{\ln(0.35)^2}{1cm^2} \approx \frac{1.1}{cm^2}\]
+		Das heißt circa $1.1$ Defekte pro $cm^2$ ($\approx 194$ Defekte auf einem $150mm$ Wafer).
+		\item \textbf{Erwartete Ausbeute an Typ B Chips}\hfill\\
+		Ausbeute nach Moore (mit gleicher Defektdichte wie Chip vom Typ A):
+		\[ Y_{W} = e^{-\sqrt{1,5\cdot 1.1}} \approx 27,7\%\]
+		Anzahl der geometrisch Möglichen Chips vom Typ B:
+		\[ \text{DPW} =  \frac{\pi 150^2mm}{4\cdot150mm^2} - \frac{\pi 150mm}{\sqrt{2\cdot 150mm^2}} \approx 90,6\]
+		Also ungefähr 90 geometrisch mögliche Chips pro Wafer. Davon $27,7\%$ als funktionsfähig.
+		\[N_{\text{gut}}=Y_W\cdot N_0 =  0,277\cdot 90\approx 25\]
+		D.h. ungefähr 25 der Chips pro Wafer sind funktionsfähig.
+		\item \textbf{Kosten der Chips von Typ A und B}\hfill \\
+		Kostenberechnung für Typ A. Dazu:
+			\[N_{\text{gut}}=Y_W\cdot N_0 =  0,35 \cdot 143 \approx 50\]
+		\[ K_{\text{IC}} = \frac{K_{\text{Wafer}}}{N_{\text{gut}}} = \frac{1000\text{\euro}}{50}=20\text{\euro}\]
+		Pro Typ A Chip sollten 20\euro berechnet werden.\\
+		Kostenberechnung für Typ B:
+		\[ K_{\text{IC}} = \frac{K_{\text{Wafer}}}{N_{\text{gut}}} = \frac{1000\text{\euro}}{25}=40\text{\euro}\]
+		Pro Typ B Chip sollten 40\euro berechnet werden.
+	\end{enumerate}
+\section*{Aufgabe 2}
+\begin{enumerate}
+	\item \textbf{Einfluss IC Entwickler auf Ausbeute}\hfill \\
+	Gemäß der Formel nach Moore steigt die Ausbeute bei kleinerer Fläche eines einzelnen Chips. Diese Verringerung der Fläche ist durch kleinere Fertigungsgrößen erreichbar, welche wiederum durch kleinere Transistoren erreicht werden können. Ebenso könnte mittels effizienterer Schaltungen (weniger Gatter bei gleicher logischer Mächtigkeit) und besserem Layout weiter Platz eingespart werden. Alle drei Punkte fallen unter Designparameter und in den Verantwortungsbereich der Entwicklung.
+	\item  \textbf{Änderung der Kosten in Abhängigkeit der Defektdichte}\hfill \\
+	Ausbeuteformel nach Moore mit $D= \frac{1}{cm^2}, A=2cm^2$:
+	\[ Y_{W} = e^{-\sqrt{AD}} = e^{-\sqrt{2}} \approx 24\% \]
+	Ausbeuteformel nach Moore mit $D= \frac{1}{cm^2}, A=1cm^2$:
+	\[ Y_{W} = e^{-\sqrt{AD}} = e^{-\sqrt{1}} \approx 37\% \]
+	Leider verdoppelt sich bei halbierter Chipfläche die Ausbeute keineswegs. Sondern steigt um gerade einmal 13 Prozentpunkte.
+\end{enumerate}
+	\end{document}
+
+	
